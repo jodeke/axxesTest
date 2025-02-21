@@ -9,5 +9,7 @@ bin/
 
 # Gradle
 .gradle
-/build/
+build/
 
+.approval_tests_temp
+*received.txt
