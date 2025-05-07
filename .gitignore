@@ -29,6 +29,8 @@ TypeScript/dist
 
 # Package files
 *.jar
+# Excluding wrapper jars for build systems
+!gradle-wrapper.jar
 
 # Maven
 target/

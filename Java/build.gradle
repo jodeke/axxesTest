@@ -7,15 +7,19 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
-    testImplementation 'com.approvaltests:approvaltests:5.0.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.12.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.12.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.12.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.12.2'
+    testImplementation 'com.approvaltests:approvaltests:24.21.0'
 }
 
 group = 'com.gildedtros'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+}
 
 test {
     useJUnitPlatform()
