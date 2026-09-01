@@ -4,86 +4,86 @@ namespace GildedTros.App
 {
     public class GildedTros
     {
-        IList<Item> Items;
-        public GildedTros(IList<Item> Items)
+        IList<ExpandedItem> ExpandedItems;
+        public GildedTros(IList<ExpandedItem> ExpandedItems)
         {
-            this.Items = Items;
+            this.ExpandedItems = ExpandedItems;
         }
 
         public void UpdateQuality()
         {
-            for (var i = 0; i < Items.Count; i++)
+            for (var i = 0; i < ExpandedItems.Count; i++)
             {
-                if (Items[i].Name != "Good Wine" 
-                    && Items[i].Name != "Backstage passes for Re:factor"
-                    && Items[i].Name != "Backstage passes for HAXX")
+                if (ExpandedItems[i].Item.Name != "Good Wine" 
+                    && ExpandedItems[i].Item.Name != "Backstage passes for Re:factor"
+                    && ExpandedItems[i].Item.Name != "Backstage passes for HAXX")
                 {
-                    if (Items[i].Quality > 0)
+                    if (ExpandedItems[i].Item.Quality > 0)
                     {
-                        if (Items[i].Name != "B-DAWG Keychain")
+                        if (ExpandedItems[i].Item.Name != "B-DAWG Keychain")
                         {
-                            Items[i].Quality = Items[i].Quality - 1;
+                            ExpandedItems[i].Item.Quality = ExpandedItems[i].Item.Quality - 1;
                         }
                     }
                 }
                 else
                 {
-                    if (Items[i].Quality < 50)
+                    if (ExpandedItems[i].Item.Quality < 50)
                     {
-                        Items[i].Quality = Items[i].Quality + 1;
+                        ExpandedItems[i].Item.Quality = ExpandedItems[i].Item.Quality + 1;
 
-                        if (Items[i].Name == "Backstage passes for Re:factor"
-                        || Items[i].Name == "Backstage passes for HAXX")
+                        if (ExpandedItems[i].Item.Name == "Backstage passes for Re:factor"
+                        || ExpandedItems[i].Item.Name == "Backstage passes for HAXX")
                         {
-                            if (Items[i].SellIn < 11)
+                            if (ExpandedItems[i].Item.SellIn < 11)
                             {
-                                if (Items[i].Quality < 50)
+                                if (ExpandedItems[i].Item.Quality < 50)
                                 {
-                                    Items[i].Quality = Items[i].Quality + 1;
+                                    ExpandedItems[i].Item.Quality = ExpandedItems[i].Item.Quality + 1;
                                 }
                             }
 
-                            if (Items[i].SellIn < 6)
+                            if (ExpandedItems[i].Item.SellIn < 6)
                             {
-                                if (Items[i].Quality < 50)
+                                if (ExpandedItems[i].Item.Quality < 50)
                                 {
-                                    Items[i].Quality = Items[i].Quality + 1;
+                                    ExpandedItems[i].Item.Quality = ExpandedItems[i].Item.Quality + 1;
                                 }
                             }
                         }
                     }
                 }
 
-                if (Items[i].Name != "B-DAWG Keychain")
+                if (ExpandedItems[i].Item.Name != "B-DAWG Keychain")
                 {
-                    Items[i].SellIn = Items[i].SellIn - 1;
+                    ExpandedItems[i].Item.SellIn = ExpandedItems[i].Item.SellIn - 1;
                 }
 
-                if (Items[i].SellIn < 0)
+                if (ExpandedItems[i].Item.SellIn < 0)
                 {
-                    if (Items[i].Name != "Good Wine")
+                    if (ExpandedItems[i].Item.Name != "Good Wine")
                     {
-                        if (Items[i].Name != "Backstage passes for Re:factor"
-                            && Items[i].Name != "Backstage passes for HAXX")
+                        if (ExpandedItems[i].Item.Name != "Backstage passes for Re:factor"
+                            && ExpandedItems[i].Item.Name != "Backstage passes for HAXX")
                         {
-                            if (Items[i].Quality > 0)
+                            if (ExpandedItems[i].Item.Quality > 0)
                             {
-                                if (Items[i].Name != "B-DAWG Keychain")
+                                if (ExpandedItems[i].Item.Name != "B-DAWG Keychain")
                                 {
-                                    Items[i].Quality = Items[i].Quality - 1;
+                                    ExpandedItems[i].Item.Quality = ExpandedItems[i].Item.Quality - 1;
                                 }
                             }
                         }
                         else
                         {
-                            Items[i].Quality = Items[i].Quality - Items[i].Quality;
+                            ExpandedItems[i].Item.Quality = ExpandedItems[i].Item.Quality - ExpandedItems[i].Item.Quality;
                         }
                     }
                     else
                     {
-                        if (Items[i].Quality < 50)
+                        if (ExpandedItems[i].Item.Quality < 50)
                         {
-                            Items[i].Quality = Items[i].Quality + 1;
+                            ExpandedItems[i].Item.Quality = ExpandedItems[i].Item.Quality + 1;
                         }
                     }
                 }
