@@ -12,82 +12,105 @@ namespace GildedTros.App
 
         public void UpdateQuality()
         {
-            for (var i = 0; i < ExpandedItems.Count; i++)
+            //this is too long, refactoring this
+            foreach (var item in ExpandedItems)
             {
-                if (ExpandedItems[i].Item.Name != "Good Wine" 
-                    && ExpandedItems[i].Item.Name != "Backstage passes for Re:factor"
-                    && ExpandedItems[i].Item.Name != "Backstage passes for HAXX")
-                {
-                    if (ExpandedItems[i].Item.Quality > 0)
-                    {
-                        if (ExpandedItems[i].Item.Name != "B-DAWG Keychain")
-                        {
-                            ExpandedItems[i].Item.Quality = ExpandedItems[i].Item.Quality - 1;
-                        }
-                    }
+                if (item.IsLegendary) {
+                    LeaveLegendaryItemAsIs(item);
+                    continue;
                 }
-                else
-                {
-                    if (ExpandedItems[i].Item.Quality < 50)
-                    {
-                        ExpandedItems[i].Item.Quality = ExpandedItems[i].Item.Quality + 1;
-
-                        if (ExpandedItems[i].Item.Name == "Backstage passes for Re:factor"
-                        || ExpandedItems[i].Item.Name == "Backstage passes for HAXX")
-                        {
-                            if (ExpandedItems[i].Item.SellIn < 11)
-                            {
-                                if (ExpandedItems[i].Item.Quality < 50)
-                                {
-                                    ExpandedItems[i].Item.Quality = ExpandedItems[i].Item.Quality + 1;
-                                }
-                            }
-
-                            if (ExpandedItems[i].Item.SellIn < 6)
-                            {
-                                if (ExpandedItems[i].Item.Quality < 50)
-                                {
-                                    ExpandedItems[i].Item.Quality = ExpandedItems[i].Item.Quality + 1;
-                                }
-                            }
-                        }
-                    }
+                if (item.IsBackstagePass) {
+                    UpdateBackstagePass(item);
+                    continue;
                 }
-
-                if (ExpandedItems[i].Item.Name != "B-DAWG Keychain")
-                {
-                    ExpandedItems[i].Item.SellIn = ExpandedItems[i].Item.SellIn - 1;
+                if (item.IsAgingWine) {
+                    UpdateAgingWineItem(item);
+                    continue;
                 }
-
-                if (ExpandedItems[i].Item.SellIn < 0)
-                {
-                    if (ExpandedItems[i].Item.Name != "Good Wine")
-                    {
-                        if (ExpandedItems[i].Item.Name != "Backstage passes for Re:factor"
-                            && ExpandedItems[i].Item.Name != "Backstage passes for HAXX")
-                        {
-                            if (ExpandedItems[i].Item.Quality > 0)
-                            {
-                                if (ExpandedItems[i].Item.Name != "B-DAWG Keychain")
-                                {
-                                    ExpandedItems[i].Item.Quality = ExpandedItems[i].Item.Quality - 1;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            ExpandedItems[i].Item.Quality = ExpandedItems[i].Item.Quality - ExpandedItems[i].Item.Quality;
-                        }
-                    }
-                    else
-                    {
-                        if (ExpandedItems[i].Item.Quality < 50)
-                        {
-                            ExpandedItems[i].Item.Quality = ExpandedItems[i].Item.Quality + 1;
-                        }
-                    }
+                if (item.IsSmelly) {
+                    UpdateSmellyItem(item);
+                    continue;
                 }
+                UpdateNormalItem(item);
             }
+
         }
+
+        public ExpandedItem UpdateNormalItem(ExpandedItem expandedItem)
+        {
+            TryDecreaseQuality(expandedItem);
+            expandedItem.DecreaseSellIn();
+            return expandedItem;
+        }
+
+        public ExpandedItem UpdateSmellyItem(ExpandedItem expandedItem)
+        {
+            TryDecreaseQuality(expandedItem);
+            TryDecreaseQuality(expandedItem);
+            expandedItem.DecreaseSellIn();
+            return expandedItem;
+        }
+
+        public ExpandedItem UpdateAgingWineItem(ExpandedItem expandedItem)
+        {
+            TryIncreaseQuality(expandedItem, QualityAdjustments.IncreaseBy1);
+            expandedItem.DecreaseSellIn();
+            return expandedItem;
+        }
+
+        public ExpandedItem UpdateBackstagePass(ExpandedItem backstagePass)
+        {
+            IncreaseBackStagePassQuality(backstagePass);
+            backstagePass.DecreaseSellIn();
+            return backstagePass;
+        }
+
+        
+        public void LeaveLegendaryItemAsIs( ExpandedItem legendaryItem)
+        {
+            //no need to update legendary items
+        }
+
+        private ExpandedItem TryDecreaseQuality(ExpandedItem expandedItem)
+        {
+            if (expandedItem.SellIn > 0 && expandedItem.Quality > 0) { expandedItem.DecreaseQuality(QualityAdjustments.DecreaseBy1); }
+            if (expandedItem.SellIn <= 0 && expandedItem.Quality > 0) { expandedItem.DecreaseQuality(QualityAdjustments.DecreaseBy2); }
+
+            return expandedItem;
+        }
+        private ExpandedItem TryIncreaseQuality(ExpandedItem expandedItem, QualityAdjustments increase)
+        {
+            if (expandedItem.Quality < (int)QualityAdjustments.MaxQualityNormalItem) 
+            {
+                expandedItem.IncreaseQuality(increase); 
+            }
+           
+            return expandedItem;
+        }
+
+        private ExpandedItem IncreaseBackStagePassQuality(ExpandedItem backstagePass)
+        {
+            switch (backstagePass.SellIn)
+            {
+                case <=0:
+                    backstagePass.SetQualityToZero();
+                    break;
+
+                case < 6:
+                    TryIncreaseQuality(backstagePass, QualityAdjustments.BackStagePassQualityExtraExtraIncrease);
+                    break;
+
+                case < 11:
+                    TryIncreaseQuality(backstagePass, QualityAdjustments.BackStagePassQualityExtraIncrease);
+                    break;
+
+                default:
+                    TryIncreaseQuality(backstagePass, QualityAdjustments.BackStagePassQualityIncrease);
+
+                    break;
+            }
+            return backstagePass;
+        }
+
     }
 }

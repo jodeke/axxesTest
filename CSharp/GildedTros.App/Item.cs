@@ -6,11 +6,12 @@
         public int SellIn { get; set; }
         public int Quality { get; set; }
     }
-    public class ExpandedItem
+    public class ExpandedItem : Item
     {
-        public Item Item { get; set; }
-        public bool IsLegendary { get; set; }
-        public bool IsBackstagePass { get; set; }
+        public bool IsAgingWine { get; set; } = false;
+        public bool IsLegendary { get; set; } = false;
+        public bool IsBackstagePass { get; set; } = false;
+        public bool IsSmelly { get; set; } = false;
     }
 
 }
