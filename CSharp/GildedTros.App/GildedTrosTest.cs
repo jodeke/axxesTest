@@ -8,7 +8,7 @@ namespace GildedTros.App
         [Fact]
         public void foo()
         {
-            IList<ExpandedItem> Items = new List<ExpandedItem> { new ExpandedItem { Name = "foo", SellIn = 0, Quality = 0 } };
+            IList<ExpandedItem> Items = new List<ExpandedItem> { new NormalItem { Name = "foo", SellIn = 0, Quality = 0 } };
             GildedTros app = new GildedTros(Items);
             app.UpdateQuality();
             Assert.Equal("fixme", Items[0].Name);
